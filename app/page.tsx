@@ -1,18 +1,15 @@
 import { Metadata } from 'next';
 
+export const dynamic = 'force-dynamic'; // 🔥 Garante que a página seja SSR e evita erro na Vercel
+
 interface PageProps {
-  searchParams: {
-    title?: string;
-    description?: string;
-    url?: string;
-    image?: string;
-  };
+  searchParams?: Record<string, string | undefined>;
 }
 
 export async function generateMetadata({ searchParams }: PageProps): Promise<Metadata> {
-  const title = searchParams.title || 'Compartilhe este link';
-  const description = searchParams.description || 'Veja este conteúdo!';
-  const imageUrl = searchParams.image || '';
+  const title = searchParams?.title || 'Compartilhe este link';
+  const description = searchParams?.description || 'Veja este conteúdo!';
+  const imageUrl = searchParams?.image || '';
 
   return {
     title,
@@ -20,17 +17,8 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
     openGraph: {
       title,
       description,
-      url: searchParams.url || '',
-      images: imageUrl
-        ? [
-            {
-              url: imageUrl,
-              width: 1200,
-              height: 630,
-              alt: title,
-            },
-          ]
-        : [],
+      url: searchParams?.url || '',
+      images: imageUrl ? [{ url: imageUrl, width: 1200, height: 630, alt: title }] : [],
       siteName: 'Compartilhamento',
       locale: 'pt_BR',
       type: 'website',
@@ -45,9 +33,9 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
 }
 
 export default function Page({ searchParams }: PageProps) {
-  const title = searchParams.title || 'Compartilhe este link';
-  const description = searchParams.description || 'Veja este conteúdo!';
-  const imageUrl = searchParams.image || '';
+  const title = searchParams?.title ?? 'Compartilhe este link';
+  const description = searchParams?.description ?? 'Veja este conteúdo!';
+  const imageUrl = searchParams?.image ?? '';
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
