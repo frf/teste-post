@@ -1,41 +1,18 @@
-import { Metadata } from 'next';
+'use client'; // 🔥 Garante que o Next.js execute isso apenas no navegador
 
-export const dynamic = 'force-dynamic'; // 🔥 Garante que a página seja SSR e evita erro na Vercel
+import { useEffect, useState } from 'react';
 
-interface PageProps {
-  searchParams?: Record<string, string | undefined>;
-}
+export default function Page() {
+  const [title, setTitle] = useState('Compartilhe este link');
+  const [description, setDescription] = useState('Veja este conteúdo!');
+  const [imageUrl, setImageUrl] = useState('');
 
-export async function generateMetadata({ searchParams }: PageProps): Promise<Metadata> {
-  const title = searchParams?.title || 'Compartilhe este link';
-  const description = searchParams?.description || 'Veja este conteúdo!';
-  const imageUrl = searchParams?.image || '';
-
-  return {
-    title,
-    description,
-    openGraph: {
-      title,
-      description,
-      url: searchParams?.url || '',
-      images: imageUrl ? [{ url: imageUrl, width: 1200, height: 630, alt: title }] : [],
-      siteName: 'Compartilhamento',
-      locale: 'pt_BR',
-      type: 'website',
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      description,
-      images: imageUrl ? [imageUrl] : [],
-    },
-  };
-}
-
-export default function Page({ searchParams }: PageProps) {
-  const title = searchParams?.title ?? 'Compartilhe este link';
-  const description = searchParams?.description ?? 'Veja este conteúdo!';
-  const imageUrl = searchParams?.image ?? '';
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setTitle(params.get('title') || 'Compartilhe este link');
+    setDescription(params.get('description') || 'Veja este conteúdo!');
+    setImageUrl(params.get('image') || '');
+  }, []);
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
