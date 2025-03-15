@@ -29,7 +29,8 @@ export default function Page() {
       metaTag.setAttribute('content', content);
     };
 
-    updateMetaTag('og:title', title);
+    updateMetaTag('title', title);
+    updateMetaTag('description', description);
     updateMetaTag('og:description', description);
     updateMetaTag('og:image', imageUrl);
     updateMetaTag('og:type', type);
