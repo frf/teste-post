@@ -11,7 +11,7 @@ export default function Page() {
     const params = new URLSearchParams(window.location.search);
     setTitle(params.get('title') || 'Compartilhe este link');
     setDescription(params.get('description') || 'Veja este conteúdo!');
-    setImageUrl(params.get('image') || '');
+    setImageUrl(params.get('url') || '');
   }, []);
 
   return (
